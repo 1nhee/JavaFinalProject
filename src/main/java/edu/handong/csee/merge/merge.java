@@ -1,9 +1,10 @@
 package edu.handong.csee.merge;
 
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.io.RandomAccessFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import java.io.File;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -26,165 +29,81 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+import edu.handong.csee.merge.writeAFile;
+
 public class merge {
 
-	private static String Input_path;
-	private static String Output_path;
+	private String Input_path;
+	private String Output_path;
 	boolean Help;
-	
-	Options options = createOptions();
-	
-	public static void main(String[] args) throws Exception{
+
+	public static void main(String[] args) {
+
+		merge myRunner = new merge();
+		myRunner.run(args);
+
+	}
+
+	private void run(String[] args) {
+		
+		Options options = createOptions();
 		
 		if(parseOptions(options, args)){
 			if (Help){
 				printHelp(options);
 				return;
 			}
-			
-		  //Unzip
-		  ZipInputStream zipinputstream = new ZipInputStream(new FileInputStream(Input_path));
-		   ZipEntry zipentry = zipinputstream.getNextEntry();
-		    while (zipentry != null) {
-		      String entryName = zipentry.getName();
-		      File newFile = new File(entryName);
-		      String directory = newFile.getParent();
-		      if (directory == null) {
-		        if (newFile.isDirectory())
-		          break;
-		      }
-		      RandomAccessFile  rf = new RandomAccessFile(entryName, "r");
-		      String line;
-		      if ((line = rf.readLine()) != null) {
-		        System.out.println(line);
-		      }
-		      rf.close();
-		      zipinputstream.closeEntry();
-		      zipentry = zipinputstream.getNextEntry();
-		    }
-		    zipinputstream.close();
-		  
-		    
-		  //merge files
-		  try {
-	        mergeExcelFiles(new File(Output_path));
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }//end of catch
-		  }// end of main
-
-	public static void mergeExcelFiles(File file) throws IOException {
-		HSSFWorkbook book = new HSSFWorkbook();
-		System.out.println(file.getName());
-		String directoryName = Input_path;
-		File directory = new File(directoryName);
+		}
 		
-		// get all the files from a directory
-		File[] fList = directory.listFiles();
+		ArrayList<String> fileString = readZipFile(this.Input_path);
 		
-		for (File file1 : fList) {
-			if (file1.isFile()) {
-				String ParticularFile = file1.getName();
-				FileInputStream fin = new FileInputStream(new File(directoryName + "\\" + ParticularFile));
-				HSSFWorkbook b = new HSSFWorkbook(fin);
-				for (int i = 0; i < b.getNumberOfSheets(); i++) {
-					HSSFSheet sheet = book.createSheet(b.getSheetName(i));
-					copySheets(book, sheet, b.getSheetAt(i));
-					System.out.println("Copying..");
-				}
-			}
-			try {
-				writeFile(book, file);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		writeAFile.writeArryListInFile(fileString, this.Output_path);
 	}
 
-	protected static void writeFile(HSSFWorkbook book, File file) throws Exception {
-		FileOutputStream out = new FileOutputStream(file);
-		book.write(out);
-		out.close();
-	}
+	private ArrayList<String> readZipFile(String Input_path){
+		 
+		List<String> fileString = new ArrayList<String>();
+	    StringBuffer sbf = new StringBuffer();
 
-	private static void copySheets(HSSFWorkbook newWorkbook, HSSFSheet newSheet, HSSFSheet sheet) {
-		copySheets(newWorkbook, newSheet, sheet, true);
-	}
+	    File file = new File(Input_path);
+	    InputStream input;
+	        
+	    try {
 
-	private static void copySheets(HSSFWorkbook newWorkbook, HSSFSheet newSheet, HSSFSheet sheet, boolean copyStyle) {
-		int newRownumber = newSheet.getLastRowNum();
-		int maxColumnNum = 0;
-		Map<Integer, HSSFCellStyle> styleMap = (copyStyle) ? new HashMap<Integer, HSSFCellStyle>() : null;
+	          input = new FileInputStream(file);
+	          ZipInputStream zip = new ZipInputStream(input);
+	          ZipEntry entry = zip.getNextEntry();
 
-		for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
-			HSSFRow srcRow = sheet.getRow(i);
-			HSSFRow destRow = newSheet.createRow(i + newRownumber);
-			if (srcRow != null) {
-				copyRow(newWorkbook, sheet, newSheet, srcRow, destRow, styleMap);
-				if (srcRow.getLastCellNum() > maxColumnNum) {
-					maxColumnNum = srcRow.getLastCellNum();
-				}
-			}
-		}
-		for (int i = 0; i <= maxColumnNum; i++) {
-			newSheet.setColumnWidth(i, sheet.getColumnWidth(i));
-		}
-	}
+	          BodyContentHandler textHandler = new BodyContentHandler();
+	          Metadata metadata = new Metadata();
 
-	public static void copyRow(HSSFWorkbook newWorkbook, HSSFSheet srcSheet, HSSFSheet destSheet, HSSFRow srcRow,
-			HSSFRow destRow, Map<Integer, HSSFCellStyle> styleMap) {
-		destRow.setHeight(srcRow.getHeight());
-		for (int j = srcRow.getFirstCellNum(); j <= srcRow.getLastCellNum(); j++) {
-			HSSFCell oldCell = srcRow.getCell(j);
-			HSSFCell newCell = destRow.getCell(j);
-			if (oldCell != null) {
-				if (newCell == null) {
-					newCell = destRow.createCell(j);
-				}
-				copyCell(newWorkbook, oldCell, newCell, styleMap);
-			}
-		}
-	}
+	          Parser parser = new AutoDetectParser();
 
-	public static void copyCell(HSSFWorkbook newWorkbook, HSSFCell oldCell, HSSFCell newCell,
-			Map<Integer, HSSFCellStyle> styleMap) {
-		if (styleMap != null) {
-			int stHashCode = oldCell.getCellStyle().hashCode();
-			HSSFCellStyle newCellStyle = styleMap.get(stHashCode);
-			if (newCellStyle == null) {
-				newCellStyle = newWorkbook.createCellStyle();
-				newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
-				styleMap.put(stHashCode, newCellStyle);
-			}
-			newCell.setCellStyle(newCellStyle);
-		}
-		switch (oldCell.getCellType()) {
-		case HSSFCell.CELL_TYPE_STRING:
-			newCell.setCellValue(oldCell.getRichStringCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_NUMERIC:
-			newCell.setCellValue(oldCell.getNumericCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_BLANK:
-			newCell.setCellType(HSSFCell.CELL_TYPE_BLANK);
-			break;
-		case HSSFCell.CELL_TYPE_BOOLEAN:
-			newCell.setCellValue(oldCell.getBooleanCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_ERROR:
-			newCell.setCellErrorValue(oldCell.getErrorCellValue());
-			break;
-		case HSSFCell.CELL_TYPE_FORMULA:
-			newCell.setCellFormula(oldCell.getCellFormula());
-			break;
-		default:
-			break;
-		}
+	          while (entry!= null){
+
+	                if(entry.getName().endsWith(".txt") || 
+	                           entry.getName().endsWith(".pdf")||
+	                           entry.getName().endsWith(".docx")){
+	                     parser.parse(input, textHandler, metadata, new ParseContext());
+	                     fileString.add(textHandler.toString());
+	                }
+	           }
+	           zip.close();
+	           input.close();
+
+	           return (ArrayList<String>) fileString;
+	           
+	        } catch (FileNotFoundException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
 	}
 	
 	// CLI
-		public boolean parseOptions(Options options, String[] args) {
+		private boolean parseOptions(Options options, String[] args) {
 			CommandLineParser parser = new DefaultParser();
 
 			try {
@@ -206,7 +125,7 @@ public class merge {
 		}
 
 		// Definition Stage
-		public Options createOptions() {
+		private Options createOptions() {
 			Options options = new Options();
 
 			// add options by using OptionBuilder
@@ -229,8 +148,5 @@ public class merge {
 			String footer = ""; // Leave this empty.
 			formatter.printHelp("CLIExample", header, options, footer, true);
 		}
-
-}
-
 
 }
