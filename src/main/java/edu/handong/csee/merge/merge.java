@@ -30,6 +30,8 @@ public class merge {
 
 	private Input_path;
 	private Output_path;
+	boolean help;
+	
 	Options options = createOptions();
 	
 	public static void main(String[] args) throws Exception{
