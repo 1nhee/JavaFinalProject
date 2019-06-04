@@ -29,7 +29,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-import edu.handong.csee.merge.writeAFile;
+import edu.handong.csee.merge.utils;
 
 public class merge {
 
@@ -57,7 +57,7 @@ public class merge {
 		
 		ArrayList<String> fileString = readZipFile(this.Input_path);
 		
-		writeAFile.writeArryListInFile(fileString, this.Output_path);
+		utils.(fileString, this.Output_path);
 	}
 
 	private ArrayList<String> readZipFile(String Input_path){
