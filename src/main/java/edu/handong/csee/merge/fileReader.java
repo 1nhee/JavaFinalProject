@@ -20,9 +20,14 @@ import java.util.LinkedList;
 
 public class fileReader { 
 	
-	public void readAFile() {
+	public static void readFiles(String Input_path) {
+		
+		ArrayList<String> strList; 
+		String strTemp; 
+		Queue<String> ql = new LinkedList<String>();
+		
 	try { 
-        FileInputStream file = new FileInputStream(new File("gfgcontribute.xlsx")); 
+        FileInputStream file = new FileInputStream(new File(Input_path)); 
 
         // Create Workbook instance holding reference to .xlsx file 
         XSSFWorkbook workbook = new XSSFWorkbook(file); 
@@ -39,6 +44,8 @@ public class fileReader {
 
             while (cellIterator.hasNext()) { 
                 Cell cell = cellIterator.next(); 
+                //strList.add(cell);
+                
                 // Check the cell type and format accordingly 
                 switch (cell.getCellType()) { 
                 case Cell.CELL_TYPE_NUMERIC: 
@@ -73,8 +80,11 @@ public class fileReader {
 	 * 
 	 * BufferedReader br = new BufferedReader (new FileReader("test.txt"));
 	 * 
-	 * while(true) { strTemp = br.readLine(); strList.add(strTemp); if (strTemp ==
-	 * null) { br.close(); ql.offer("eof"); break; } synchronized(lock) {
+	 * while(true) {
+	 *  strTemp = br.readLine(); 
+	 *  strList.add(strTemp); 
+	 *  if (strTemp == null) { 
+	 *  br.close(); ql.offer("eof"); break; } synchronized(lock) {
 	 * ql.offer(strTemp); lock.notifyAll(); // this is to prevent out of memory
 	 * error if (ql.size() > 1000) { try { lock.wait(); } catch(InterruptedException
 	 * ex) { } } } }
