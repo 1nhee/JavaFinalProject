@@ -8,7 +8,7 @@ import java.util.zip.ZipInputStream;
 
 public class UnzipFiles {
 
-	public static void decompress(String Input_path, String Output_path) throws Throwable {
+	public static String decompress(String Input_path, String Output_path) throws Throwable {
 		File zipFile = new File(Input_path);
 		FileInputStream fis = null;
 		ZipInputStream zis = null;
@@ -42,6 +42,7 @@ public class UnzipFiles {
 			if (fis != null)
 				fis.close();
 		}
+		return Output_path;
 
 	}
 
