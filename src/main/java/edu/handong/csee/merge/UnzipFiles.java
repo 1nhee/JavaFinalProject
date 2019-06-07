@@ -3,26 +3,33 @@ package edu.handong.csee.merge;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class UnzipFiles {
 
-	public static String decompress(String Input_path, String Output_path) throws Throwable {
+	public static ArrayList<String> decompress(String Input_path) throws Throwable {
 		File zipFile = new File(Input_path);
 		FileInputStream fis = null;
 		ZipInputStream zis = null;
 		ZipEntry zipentry = null;
+		
+		int before = Input_path.indexOf(".zip");
+		Input_path.substring(0,before-1);
+		String Output_path = 
 
 		try {
 			// 파일 스트림
 			fis = new FileInputStream(zipFile);
 			// Zip 파일 스트림
 			zis = new ZipInputStream(fis);
-
+			ArrayList<String> fileNames = new ArrayList<String>();
+			
 			// entry가 없을때까지 뽑기
 			while ((zipentry = zis.getNextEntry()) != null) {
 				String filename = zipentry.getName();
+				
 				File file = new File(Output_path, filename);
 				
 				// entry가 폴더면 폴더 생성
@@ -42,6 +49,8 @@ public class UnzipFiles {
 			if (fis != null)
 				fis.close();
 		}
+		
+		System.out.println(Output_path);
 		return Output_path;
 
 	}
