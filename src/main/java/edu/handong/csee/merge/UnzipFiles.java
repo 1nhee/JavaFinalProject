@@ -9,9 +9,9 @@ import java.util.zip.ZipInputStream;
 
 public class UnzipFiles {
 
-	public static ArrayList<String> decompress(String Input_path, String Output_path) throws Throwable {
+	public static ArrayList<String> decompress(String Input_path) throws Throwable {
 		File zipFile = new File(Input_path);
-		System.out.println(Input_path);
+		//System.out.println(Input_path);
 		FileInputStream fis = null;
 		ZipInputStream zis = null;
 		ZipEntry zipentry = null;
@@ -28,11 +28,11 @@ public class UnzipFiles {
 				String filename = zipentry.getName();
 				fileNames.add(filename);
 				
-				File file = new File(Output_path, filename);
+				File file = new File(filename);
 				
 				// entry가 폴더면 폴더 생성
 				if (zipentry.isDirectory()) {
-					//file.mkdirs();
+					file.mkdirs();
 				} else {
 					// 파일이면 파일 만들기
 					createFile(file, zis);
@@ -48,7 +48,7 @@ public class UnzipFiles {
 				fis.close();
 		}
 		
-		System.out.println(Output_path);
+		//System.out.println(Output_path);
 		
 		return fileNames;
 
