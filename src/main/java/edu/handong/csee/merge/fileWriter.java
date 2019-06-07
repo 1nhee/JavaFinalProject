@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,7 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class fileWriter {
 	
-	public static void writeFiles(String[] args) {
+	public static void writeFiles(ArrayList<String> toAdd, String Output_path) {
 		HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Datatypes in Java");
         Object[][] datatypes = {

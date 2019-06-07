@@ -24,7 +24,7 @@ public class fileReader {
 		
 		ArrayList<String> strList;
 		ArrayList<String> 
-		String strTemp; 
+		//String strTemp; 
 		Queue<String> ql = new LinkedList<String>();
 		
 	try { 

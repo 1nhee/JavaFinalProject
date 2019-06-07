@@ -17,6 +17,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 import edu.handong.csee.merge.UnzipFiles;
+import edu.handong.csee.merge.utils;
 
 public class start {
 
@@ -26,94 +27,96 @@ public class start {
 
 	public static void main(String[] args) throws Throwable {
 
+		ArrayList<String> path = new ArrayList<String>();
+
+		UnzipSub unzip = new UnzipSub();
 		start toStart = new start();
-		UnzipFiles unzip = new UnzipFiles();
-		UnzipSub unzipSub = new UnzipSub();
+		// toStart.run(args);
+
+		toStart.Input_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
+		toStart.Output_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
 
 		ArrayList<String> toGet = new ArrayList<String>();
 		ArrayList<String> allFileContents = new ArrayList<String>();
 
-		toStart.Input_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data.zip";
-		toStart.Output_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\unzip";
-
-		toGet = unzip.decompress(toStart.Input_path, toStart.Output_path);
-
-		int i = 0;
-
-		for (String toCheck : toGet) {
-			String toOut = String.format("%04d", i + 1);
-			i++;
-
-			File toMake = new File(toOut);
-
-			String path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\unzip" + "\\" + toOut; // 폴더 경로
-			File Folder = new File(path);
-
-			// 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
-			if (!Folder.exists()) {
-				try {
-					Folder.mkdir(); // 폴더 생성합니다.
-				} catch (Exception e) {
-					e.getStackTrace();
-				}
+		for (int i = 1; i < 6; i++) {
+			String toCheck = String.format("%04d", i);
+			System.out.println(toStart.Input_path + "\\" + toCheck + ".zip");
+			toGet = unzip.subDecompress(toStart.Input_path + "\\" + toCheck + ".zip");
+			
+			for(String toAdd : toGet) {
+				allFileContents.add(toAdd);
 			}
-			
-			ZipReader subRead = new ZipReader();
-
-			ArrayList<String> toAdd = new ArrayList<String>();
-			toAdd = unzipSub.subDecompress(path+".zip", path);
-			System.out.println("start" + path+".zip");
-			
-			for(String toAddSub : toAdd) {
-				allFileContents.add(toAddSub);
-				//System.out.println(toAddSub);
-			}
-			
-			
-			/*
-			 * for (String toCheckTo : unzip.decompress(path+".zip", path)) {
-			 * allFileNames.add(toCheckTo); System.out.println(toCheckTo); }
-			 */
+			utils write = new utils();
+			write.writeAFile(allFileContents, toStart.Output_path);
 		}
+	
+
+	}// end of main
+
+	public void run(String[] args) {
+		Options options = createOptions();
+
+		ArrayList<String> path = new ArrayList<String>();
+
+		if (parseOptions(options, args)) {
+			if (Help) {
+				printHelp(options);
+				return;
+			}
+		}
+
+		// path is required (necessary) data so no need to have a branch.
+		System.out.println("This is result of 'i' option");
+		System.out.println("You put this path: " + Input_path + "\n");
 	}
 
-	/*
-	 * LsRuuner myRunner = new LsRuuner(); myRunner.run(args);
-	 * 
-	 * File dir = new File();
-	 * 
-	 * File[] fileList = dir.listFiles();
-	 * 
-	 * try {
-	 * 
-	 * for (int i = 0; i < fileList.length; i++) {
-	 * 
-	 * File file = fileList[i];
-	 * 
-	 * if (file.isFile()) {
-	 * 
-	 * // 파일이 있다면 파일 이름 출력
-	 * 
-	 * System.out.println("\t 파일 이름 = " + file.getName());
-	 * 
-	 * } else if (file.isDirectory()) {
-	 * 
-	 * System.out.println("디렉토리 이름 = " + file.getName());
-	 * 
-	 * // 서브디렉토리가 존재하면 재귀적 방법으로 다시 탐색
-	 * 
-	 * subDirList(file.getCanonicalPath().toString());
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * } catch (IOException e) {
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 */
+	public boolean parseOptions(Options options, String[] args) {
+		CommandLineParser parser = new DefaultParser();
 
-}
+		try {
+
+			CommandLine cmd = parser.parse(options, args);
+
+			start.Input_path = cmd.getOptionValue("i");
+			System.out.println(Input_path);
+			start.Output_path = cmd.getOptionValue("o");
+			start.Help = cmd.hasOption("h");
+
+		} catch (Exception e) {
+			printHelp(options);
+			return false;
+		}
+
+		return true;
+	}
+
+	// Definition Stage
+	public Options createOptions() {
+		Options options = new Options();
+
+		// input
+		options.addOption(
+				Option.builder("i").longOpt("Input_path").desc("Set a path of a directory or a file to display")
+						.hasArg().argName("Path name to display").required().build());
+
+		// input
+		options.addOption(
+				Option.builder("o").longOpt("Output_path").desc("Set a path of a directory or a file to display")
+						.hasArg().argName("Path name to display").required().build());
+
+		// add options by using OptionBuilder
+		options.addOption(Option.builder("h").longOpt("Help").desc("Help").build());
+
+		return options;
+	}
+
+	public void printHelp(Options options) {
+		// automatically generate the help statement
+		HelpFormatter formatter = new HelpFormatter();
+		String header = "ls CLI";
+		String footer = "";
+		formatter.printHelp("CLIExample", header, options, footer, true);
+	}
+
+}// end of class
