@@ -16,7 +16,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-import edu.handong.csee.merge.UnzipFiles;
+import edu.handong.csee.merge.ZipReader;
 import edu.handong.csee.merge.utils;
 
 public class start {
@@ -30,6 +30,7 @@ public class start {
 		ArrayList<String> path = new ArrayList<String>();
 
 		UnzipSub unzip = new UnzipSub();
+		ZipReader zipReader = new ZipReader();
 		start toStart = new start();
 		// toStart.run(args);
 
@@ -42,15 +43,17 @@ public class start {
 		for (int i = 1; i < 6; i++) {
 			String toCheck = String.format("%04d", i);
 			System.out.println(toStart.Input_path + "\\" + toCheck + ".zip");
-			toGet = unzip.subDecompress(toStart.Input_path + "\\" + toCheck + ".zip");
+			ZipReader zipR = new ZipReader();
+			toGet = zipR.readFileInZip(toStart.Input_path + "\\" + toCheck + ".zip");
+			//toGet = unzip.subDecompress(toStart.Input_path + "\\" + toCheck + ".zip");
 			
 			for(String toAdd : toGet) {
 				allFileContents.add(toAdd);
 			}
 		}
-		
-		utils write = new utils();
-		write.writeAFile(lines, targetFileName);
+		/*
+		 * utils write = new utils(); write.writeAFile(lines, targetFileName);
+		 */
 
 	}// end of main
 
