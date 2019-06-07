@@ -9,26 +9,24 @@ import java.util.zip.ZipInputStream;
 
 public class UnzipFiles {
 
-	public static ArrayList<String> decompress(String Input_path) throws Throwable {
+	public static ArrayList<String> decompress(String Input_path, String Output_path) throws Throwable {
 		File zipFile = new File(Input_path);
+		System.out.println(Input_path);
 		FileInputStream fis = null;
 		ZipInputStream zis = null;
 		ZipEntry zipentry = null;
 		
-		int before = Input_path.indexOf(".zip");
-		Input_path.substring(0,before-1);
-		String Output_path = 
+		ArrayList<String> fileNames = new ArrayList<String>();
 
 		try {
 			// 파일 스트림
 			fis = new FileInputStream(zipFile);
-			// Zip 파일 스트림
 			zis = new ZipInputStream(fis);
-			ArrayList<String> fileNames = new ArrayList<String>();
-			
+	
 			// entry가 없을때까지 뽑기
 			while ((zipentry = zis.getNextEntry()) != null) {
 				String filename = zipentry.getName();
+				fileNames.add(filename);
 				
 				File file = new File(Output_path, filename);
 				
@@ -51,7 +49,8 @@ public class UnzipFiles {
 		}
 		
 		System.out.println(Output_path);
-		return Output_path;
+		
+		return fileNames;
 
 	}
 

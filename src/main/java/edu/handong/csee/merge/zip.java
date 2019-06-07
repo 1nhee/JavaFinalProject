@@ -45,8 +45,4 @@ public class zip {
 			}
 		}
 	}
-
-	public static void main(String[] args) {
-		new MadPlay().unzipExample();
-	}
 }

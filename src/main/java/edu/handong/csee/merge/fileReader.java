@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Queue;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -22,7 +22,8 @@ public class fileReader {
 	
 	public static void readFiles(String Input_path) {
 		
-		ArrayList<String> strList; 
+		ArrayList<String> strList;
+		ArrayList<String> 
 		String strTemp; 
 		Queue<String> ql = new LinkedList<String>();
 		
@@ -44,20 +45,19 @@ public class fileReader {
 
             while (cellIterator.hasNext()) { 
                 Cell cell = cellIterator.next(); 
-                cell.get
-                //strList.add(cell);
                 
                 // Check the cell type and format accordingly 
                 switch (cell.getCellType()) { 
-                case Cell.CELL_TYPE_NUMERIC: 
-                    System.out.print(cell.getNumericCellValue() + "t"); 
-                    break; 
-                case aCell.CELL_TYPE_STRING: 
-                    System.out.print(cell.getStringCellValue() + "t"); 
-                    break; 
+	                case NUMERIC: 
+	                    System.out.print(cell.getNumericCellValue() + "t"); 
+	                    break; 
+	                case STRING: 
+	                	strList.add(cell.getStringCellValue()); 
+	                    break;
+					default:
+						break; 
                 } 
             } 
-            System.out.println(""); 
         } 
         file.close(); 
     } 
