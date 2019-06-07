@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Queue;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,6 +44,7 @@ public class fileReader {
 
             while (cellIterator.hasNext()) { 
                 Cell cell = cellIterator.next(); 
+                cell.get
                 //strList.add(cell);
                 
                 // Check the cell type and format accordingly 
