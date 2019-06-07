@@ -10,10 +10,10 @@ import org.apache.commons.compress.archivers.zip.ZipFile;
 
 public class ZipReader {
 
-	public ArrayList<String> readFileInZip(String path) {
+	public ArrayList<Object> readFileInZip(String path) {
 		
 		ZipFile zipFile;
-		ArrayList<String> fileNames = new ArrayList<String>();
+		ArrayList<Object> fileNames = new ArrayList<Object>();
 		
 		try {
 			zipFile = new ZipFile(path);
@@ -25,7 +25,7 @@ public class ZipReader {
 		    
 		        ExcelReader myReader = new ExcelReader();
 		        
-		        for(String value:myReader.getData(stream)) {
+		        for(Object value:myReader.getData(stream)) {
 		        	System.out.println(value);
 		        	fileNames.add(value);
 		        }

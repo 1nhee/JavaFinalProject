@@ -29,7 +29,7 @@ public class start {
 
 		ArrayList<String> path = new ArrayList<String>();
 
-		UnzipSub unzip = new UnzipSub();
+		//UnzipSub unzip = new UnzipSub();
 		ZipReader zipReader = new ZipReader();
 		start toStart = new start();
 		// toStart.run(args);
@@ -37,8 +37,8 @@ public class start {
 		toStart.Input_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
 		toStart.Output_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
 
-		ArrayList<String> toGet = new ArrayList<String>();
-		ArrayList<String> allFileContents = new ArrayList<String>();
+		ArrayList<Object> toGet = new ArrayList<Object>();
+		ArrayList<Object> allFileContents = new ArrayList<Object>();
 
 		for (int i = 1; i < 6; i++) {
 			String toCheck = String.format("%04d", i);
@@ -47,7 +47,7 @@ public class start {
 			toGet = zipR.readFileInZip(toStart.Input_path + "\\" + toCheck + ".zip");
 			//toGet = unzip.subDecompress(toStart.Input_path + "\\" + toCheck + ".zip");
 			
-			for(String toAdd : toGet) {
+			for(Object toAdd : toGet) {
 				allFileContents.add(toAdd);
 			}
 		}

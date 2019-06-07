@@ -64,14 +64,14 @@ public class ExcelReader {
 						CellType cellType = cell.getCellType();// 
 						
 						if (cellType.equals(CellType.STRING)) {
-							cellValue = cell.getStringCellValue());
+							cellValue = cell.getStringCellValue();
 							values.add(cellValue);
 						} else if (cellType.equals(CellType.NUMERIC)) {
 							if (DateUtil.isCellDateFormatted(cell)) {
-								cellValue = cell.getDateCellValue());
+								cellValue = cell.getDateCellValue();
 								values.add(cellValue);
 							} else {
-								cellValue = cell.getNumericCellValue());
+								cellValue = cell.getNumericCellValue();
 								values.add(cellValue);
 							}
 						} else if (cellType.equals(CellType.BOOLEAN)) {
