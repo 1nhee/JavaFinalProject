@@ -30,10 +30,10 @@ public class fileReader {
         FileInputStream file = new FileInputStream(new File(Input_path)); 
 
         // Create Workbook instance holding reference to .xlsx file 
-        XSSFWorkbook workbook = new XSSFWorkbook(file); 
+        HSSFWorkbook workbook = new HSSFWorkbook(file); 
 
         // Get first/desired sheet from the workbook 
-        XSSFSheet sheet = workbook.getSheetAt(0); 
+        HSSFSheet sheet = workbook.getSheetAt(0); 
 
         // Iterate through each rows one by one 
         Iterator<Row> rowIterator = sheet.iterator(); 
