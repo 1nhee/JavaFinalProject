@@ -28,9 +28,10 @@ public class start {
 
 		start toStart = new start();
 		UnzipFiles unzip = new UnzipFiles();
+		UnzipSub unzipSub = new UnzipSub();
 
 		ArrayList<String> toGet = new ArrayList<String>();
-		ArrayList<String> allFileNames = new ArrayList<String>();
+		ArrayList<String> allFileContents = new ArrayList<String>();
 
 		toStart.Input_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data.zip";
 		toStart.Output_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\unzip";
@@ -56,13 +57,16 @@ public class start {
 					e.getStackTrace();
 				}
 			}
+			
+			ZipReader subRead = new ZipReader();
 
 			ArrayList<String> toAdd = new ArrayList<String>();
-			toAdd = unzip.decompress(path+".zip", path);
+			toAdd = unzipSub.subDecompress(path+".zip", path);
+			System.out.println("start" + path+".zip");
 			
 			for(String toAddSub : toAdd) {
-				allFileNames.add(toAddSub);
-				System.out.println(toAddSub);
+				allFileContents.add(toAddSub);
+				//System.out.println(toAddSub);
 			}
 			
 			

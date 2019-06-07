@@ -32,7 +32,7 @@ public class UnzipFiles {
 				
 				// entry가 폴더면 폴더 생성
 				if (zipentry.isDirectory()) {
-					file.mkdirs();
+					//file.mkdirs();
 				} else {
 					// 파일이면 파일 만들기
 					createFile(file, zis);
@@ -64,9 +64,9 @@ public class UnzipFiles {
 		// 디렉토리 확인
 		File parentDir = new File(file.getParent());
 		// 디렉토리가 없으면 생성하자
-		if (!parentDir.exists()) {
-			parentDir.mkdirs();
-		}
+		/*
+		 * if (!parentDir.exists()) { parentDir.mkdirs(); }
+		 */
 		// 파일 스트림 선언
 		try (FileOutputStream fos = new FileOutputStream(file)) {
 			byte[] buffer = new byte[256];
