@@ -8,14 +8,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class fileWriter {
 	
 	public static void writeFiles(String[] args) {
-		XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Datatypes in Java");
+		HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("Datatypes in Java");
         Object[][] datatypes = {
                 {"Datatype", "Type", "Size(in bytes)"},
                 {"int", "Primitive", 2},
