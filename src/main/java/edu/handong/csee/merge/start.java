@@ -47,10 +47,10 @@ public class start {
 			for(String toAdd : toGet) {
 				allFileContents.add(toAdd);
 			}
-			utils write = new utils();
-			write.writeAFile(allFileContents, toStart.Output_path);
 		}
-	
+		
+		utils write = new utils();
+		write.writeAFile(lines, targetFileName);
 
 	}// end of main
 
