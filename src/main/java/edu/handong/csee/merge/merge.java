@@ -37,12 +37,13 @@ public class merge {
 	private String Output_path;
 	boolean Help;
 
-	public static void main(String[] args) {
-
-		merge myRunner = new merge();
-		myRunner.run(args);
-
-	}
+	/*
+	 * public static void main(String[] args) {
+	 * 
+	 * merge myRunner = new merge(); myRunner.run(args);
+	 * 
+	 * }
+	 */
 
 	private void run(String[] args) {
 		
