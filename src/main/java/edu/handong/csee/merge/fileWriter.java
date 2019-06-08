@@ -5,53 +5,60 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class fileWriter {
 	
-	public static void writeFiles(ArrayList<String> toAdd, String Output_path) {
-		HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Datatypes in Java");
-        Object[][] datatypes = {
-                {"Datatype", "Type", "Size(in bytes)"},
-                {"int", "Primitive", 2},
-                {"float", "Primitive", 4},
-                {"double", "Primitive", 8},
-                {"char", "Primitive", 1},
-                {"String", "Non-Primitive", "No fixed size"}
-        };
-
-        int rowNum = 0;
-        System.out.println("Creating excel");
-
-        for (Object[] datatype : datatypes) {
-            Row row = sheet.createRow(rowNum++);
-            int colNum = 0;
-            for (Object field : datatype) {
-                Cell cell = row.createCell(colNum++);
-                if (field instanceof String) {
-                    cell.setCellValue((String) field);
-                } else if (field instanceof Integer) {
-                    cell.setCellValue((Integer) field);
-                }
-            }
-        }
-
-        try {
-            FileOutputStream outputStream = new FileOutputStream(FILE_NAME);
-            workbook.write(outputStream);
-            workbook.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Done");
-    }
+	public static void writeFiles(ArrayList<Object> toAdd, String Output_path, ArrayList<Object> allHeader) throws IOException, InvalidFormatException{
+		
+		 // Blank workbook 
+        XSSFWorkbook workbook = new XSSFWorkbook(); 
+  
+        // Create a blank sheet 
+        XSSFSheet sheet = workbook.createSheet(Output_path); 
+     
+            // this creates a new row in the sheet 
+            //Row row = sheet.createRow(rownum++); 
+            
+            int cellnum = 0; 
+            
+            sheet.set
+            
+            for (Object obj : toAdd) { 
+                // this line creates a cell in the next column of that row 
+                Cell cell = row.createCell(cellnum++); 
+                if (obj instanceof String) 
+                    cell.setCellValue((String)obj); 
+                else if (obj instanceof Integer) 
+                    cell.setCellValue((Integer)obj); 
+        } 
+        try { 
+            // this Writes the workbook gfgcontribute 
+            FileOutputStream out = new FileOutputStream(new File("gfgcontribute.xlsx")); 
+            workbook.write(out); 
+            out.close(); 
+            System.out.println("gfgcontribute.xlsx written successfully on disk."); 
+        } 
+        catch (Exception e) { 
+            e.printStackTrace(); 
+        } 
+    } 
+	System.out.println("\n\nFile is written\n\n");
 }

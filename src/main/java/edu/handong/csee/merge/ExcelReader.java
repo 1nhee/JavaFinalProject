@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import edu.handong.csee.merge.MyException;
+
 public class ExcelReader {
 
 	public ArrayList<String> getData(String path) {
@@ -48,13 +50,14 @@ public class ExcelReader {
 		ArrayList<Object> values = new ArrayList<Object>();
 
 		try (InputStream inp = is) {
-
+			
 			Workbook wb = WorkbookFactory.create(inp);
 			Sheet sheet = wb.getSheetAt(0);
 
 			for (Row row : sheet) {
-				if (row.getRowNum() == 1) {
-					String toAdd = Integer.toString(-1);
+				
+				if (row.getRowNum() == 0) {
+					String toAdd = Integer.toString(row.getLastCellNum());
 					values.add(toAdd);
 				}
 				
@@ -93,7 +96,8 @@ public class ExcelReader {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//MyException ex = new MyException();
+			//e.printStackTrace();
 		}
 
 		return values;
