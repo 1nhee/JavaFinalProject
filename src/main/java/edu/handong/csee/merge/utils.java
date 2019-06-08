@@ -165,15 +165,29 @@ public class utils {
 			return lines;
 		}
 		
-		public static void writeAFile(ArrayList<String> lines, String targetFileName){
+		public static void writeAFile(ArrayList<Object> finishStr, String targetFileName, ArrayList<Object> allHeader){
 			try {
 				File file= new File(targetFileName);
 				FileOutputStream fos = new FileOutputStream(file);
 				DataOutputStream dos=new DataOutputStream(fos);
 				
-				for(String line:lines){
-					dos.write((line+"\n").getBytes());
+				int row = 0;
+				String strHead = new String();
+				for(Object str : allHeader) {
+					if(row != allHeader.size()) {
+						strHead.concat(str.toString() + ",");
+					}else {
+						strHead.concat(str.toString());
+					}
 				}
+				
+				System.out.println(strHead);
+				dos.write((strHead+"\n").getBytes());
+				
+				for(Object line:finishStr){
+					dos.writeUTF(line+"\n");
+				}
+				System.out.println("File is written in " + targetFileName);
 				//dos.writeBytes();
 				dos.close();
 				fos.close();

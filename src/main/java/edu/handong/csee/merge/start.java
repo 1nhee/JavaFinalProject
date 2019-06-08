@@ -17,13 +17,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
 import edu.handong.csee.merge.ZipReader;
-import edu.handong.csee.merge.fileWriter;
+import edu.handong.csee.merge.utils;
 
 public class start {
 
 	static String Input_path;
 	static String Output_path;
-	boolean Help;
+	static boolean Help;
 
 	public static void main(String[] args) throws Throwable {
 
@@ -129,14 +129,22 @@ public class start {
 				}
 			}
 		}
+		
+		ArrayList<Object> finishStr = new ArrayList<Object>();
+		ArrayList<Object> finishTable = new ArrayList<Object>();
+		
+		int rowStr = 0;
+		String strHead = allHeader.get(0).toString()+ "," + allHeader.get(1).toString()+ "," + allHeader.get(2).toString()+ "," + allHeader.get(3).toString()+ "," + allHeader.get(4).toString()+ "," + allHeader.get(5).toString()+ "," + allHeader.get(6).toString();
+		//finishStr.add(strHead);
 
-		fileWriter write = new fileWriter();
+		utils write = new utils();
 		
 		//write string file
-		write.writeFiles(allStr, Output_path+"string.xlsx", allHeader);
+		write.writeAFile(finishStr, Output_path+"\\string.xlsx", allHeader);
 		
 		//write table file
-		write.writeFiles(allTable, Output_path+"table.xlsx", allTableHeader);
+		//write.writeAFile(allTable, Output_path+"\\table.xlsx");
+	
 
 	}// end of main
 
