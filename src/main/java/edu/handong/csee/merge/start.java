@@ -51,7 +51,7 @@ public class start {
 			for (Object toAdd : toGet) {
 
 				allFileContents.add(toAdd);
-				// System.out.println(toAdd);
+				System.out.println(toAdd);
 			}
 		}
 
