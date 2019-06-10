@@ -46,8 +46,8 @@ public class ExcelReader {
 		return values;
 	}
 
-	public ArrayList<Object> getData(InputStream is) {
-		ArrayList<Object> values = new ArrayList<Object>();
+	public ArrayList<String> getData(InputStream is) {
+		ArrayList<String> values = new ArrayList<String>();
 
 		try (InputStream inp = is) {
 			
@@ -63,29 +63,14 @@ public class ExcelReader {
 				
 				for (Cell cell : row) {
 					if (cell != null) {
-						Object cellValue = null;
+						String cellValue = null;
 						CellType cellType = cell.getCellType();// 
 						
 						if (cellType.equals(CellType.STRING)) {
 							cellValue = cell.getStringCellValue();
 							values.add(cellValue);
-						} else if (cellType.equals(CellType.NUMERIC)) {
-							if (DateUtil.isCellDateFormatted(cell)) {
-								cellValue = cell.getDateCellValue();
-								values.add(cellValue);
-							} else {
-								cellValue = cell.getNumericCellValue();
-								values.add(cellValue);
-							}
-						} else if (cellType.equals(CellType.BOOLEAN)) {
-							cellValue = cell.getBooleanCellValue();
-							values.add(cellValue);
-						} else if (cellType.equals(CellType.FORMULA)) {
-							cellValue = cell.getCellFormula();
-							values.add(cellValue);
-						} else if (cellType.equals(CellType.BLANK)) {
-							cellValue = "";
-							values.add(cellValue);
+						} else {
+							
 						}
 					}
 				}

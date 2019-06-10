@@ -13,10 +13,10 @@ import edu.handong.csee.merge.MyException;
 
 public class ZipReader {
 
-	public ArrayList<Object> readFileInZip(String path) {
+	public ArrayList<String> readFileInZip(String path) {
 		
 		ZipFile zipFile;
-		ArrayList<Object> fileContents = new ArrayList<Object>();
+		ArrayList<String> fileContents = new ArrayList<String>();
 		
 		try {
 			zipFile = new ZipFile(path);
@@ -33,7 +33,7 @@ public class ZipReader {
 			        
 			        int num = 0;
 			        
-			        for(Object value:myReader.getData(stream)) {
+			        for(String value : myReader.getData(stream)) {
 			        	
 			        	if(!value.equals(null)) {
 			        		

@@ -11,13 +11,13 @@ import java.util.Arrays;
 
 public class CSVWriter {
 
-	public static void writeAFile (ArrayList<Object> finishStr, String targetFileName, ArrayList<Object> allHeader) throws IOException {
+	public static void writeAFile (ArrayList<String> finishStr, String targetFileName, ArrayList<String> allHeader) throws IOException {
         try {
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(targetFileName));
         		
         	String head = new String();
-        	for(Object header : allHeader) {
+        	for(String header : allHeader) {
         		System.out.println("object "+header);
         		head.concat(header.toString());
         	}
@@ -28,19 +28,19 @@ public class CSVWriter {
             
             int count = 0;
             String input = new String();
-            for(Object in : finishStr) {
+            for(String in : finishStr) {
             	if(count == 6) {
-            		input.concat(in.toString());
+            		input.concat(in);
             		System.out.println("input "+input);
             		csvPrinter.printRecord(input);
             		count = 0;
             		input = "";
             	}else {
-            		input.concat(in.toString()+",");
+            		input.concat(in +",");
                 	count++;
             	}
             }
-            System.out.println("File is written in " + targetFileName);
+            //System.out.println("File is written in " + targetFileName);
             csvPrinter.flush();            
         }finally{
         	

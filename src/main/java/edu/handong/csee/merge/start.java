@@ -29,8 +29,8 @@ public class start {
 		Input_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
 		Output_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
 
-		ArrayList<Object> toGet = new ArrayList<Object>();
-		ArrayList<Object> allFileContents = new ArrayList<Object>();
+		ArrayList<String> toGet = new ArrayList<String>();
+		ArrayList<String> allFileContents = new ArrayList<String>();
 		ArrayList<Integer> allHeaderNum = new ArrayList<Integer>();
 
 		for (int i = 1; i < 6; i++) {
@@ -40,18 +40,18 @@ public class start {
 			toGet = zipR.readFileInZip(toStart.Input_path + "\\" + toCheck + ".zip");
 			// toGet = unzip.subDecompress(toStart.Input_path + "\\" + toCheck + ".zip");
 
-			for (Object toAdd : toGet) {
+			for (String toAdd : toGet) {
 
 				allFileContents.add(toAdd);
-				//System.out.println(toAdd);
+				// System.out.println(toAdd);
 			}
 		}
 
-		ArrayList<Object> allHeader = new ArrayList<Object>();
-		ArrayList<Object> allTableHeader = new ArrayList<Object>();
+		ArrayList<String> allHeader = new ArrayList<String>();
+		ArrayList<String> allTableHeader = new ArrayList<String>();
 
-		ArrayList<Object> allTable = new ArrayList<Object>();
-		ArrayList<Object> allStr = new ArrayList<Object>();
+		ArrayList<String> allTable = new ArrayList<String>();
+		ArrayList<String> allStr = new ArrayList<String>();
 
 		ArrayList<Integer> table5Header = new ArrayList<Integer>();
 		ArrayList<Integer> table7Header = new ArrayList<Integer>();
@@ -86,20 +86,23 @@ public class start {
 
 		int studentTbl = 1;
 		for (int count : table55Header) {
-
+			System.out.println("count " + count);
 			String toCheck = String.format("%04d", studentTbl++);
 			allTable.add("Student " + toCheck);
 
-			if (count == 716) {
-				for (int i = count + 5; i < 807; i++) {
+			if (count == 406) {
+				for (int i = count + 5;; i++) {
 					allTable.add(allFileContents.get(i));
+					System.out.println(i + ": " + allFileContents.get(i));
+					if (allFileContents.get(i + 1).equals("5")) {
+						break;
+					}
 				}
 			} else {
 				for (int i = count + 5;; i++) {
 					allTable.add(allFileContents.get(i));
-
-					if (allFileContents.get(i).equals("7")
-							|| (allFileContents.get(i).equals("89.0") && allFileContents.get(i + 1).equals("5"))) {
+					System.out.println(i + ": " + allFileContents.get(i));
+					if (i == 649 || allFileContents.get(i + 1).equals("7")) {
 						break;
 					}
 				}
@@ -121,22 +124,23 @@ public class start {
 				}
 			}
 		}
-		
-		ArrayList<Object> finishStr = new ArrayList<Object>();
-		ArrayList<Object> finishTable = new ArrayList<Object>();
-		
+
+		ArrayList<String> finishStr = new ArrayList<String>();
+		ArrayList<String> finishTable = new ArrayList<String>();
+
 		int rowStr = 0;
-		String strHead = allHeader.get(0).toString()+ "," + allHeader.get(1).toString()+ "," + allHeader.get(2).toString()+ "," + allHeader.get(3).toString()+ "," + allHeader.get(4).toString()+ "," + allHeader.get(5).toString()+ "," + allHeader.get(6).toString();
-		//finishStr.add(strHead);
+		String strHead = allHeader.get(0) + "," + allHeader.get(1) + "," + allHeader.get(2).toString() + ","
+				+ allHeader.get(3).toString() + "," + allHeader.get(4).toString() + "," + allHeader.get(5).toString()
+				+ "," + allHeader.get(6).toString();
+		// finishStr.add(strHead);
 
 		utils write = new utils();
-	
-		//write string file
-		CSVWriter.writeAFile(finishStr, Output_path+"\\string.csv", allHeader);
-		
-		//write table file
-		//write.writeAFile(allTable, Output_path+"\\table.xlsx");
-	
+
+		// write string file
+		CSVWriter.writeAFile(finishStr, Output_path + "\\string.csv", allHeader);
+
+		// write table file
+		// write.writeAFile(allTable, Output_path+"\\table.xlsx");
 
 	}// end of main
 
