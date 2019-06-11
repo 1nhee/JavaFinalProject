@@ -10,13 +10,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import edu.handong.csee.merge.MyException;
 
-public class ExcelReader {
+import edu.handong.csee.merge.queue;
 
-	public ArrayList<String> getData(InputStream is) {
-		ArrayList<String> values = new ArrayList<String>();
-		ArrayList<String> error = new ArrayList<String>();
+public class ExcelReader extends Thread{
+
+	public queue getData(InputStream is) {
+		//ArrayList<String> values = new ArrayList<String>();
+		
+		queue q = new queue();
 
 		try (InputStream inp = is) {
 			
@@ -25,13 +27,9 @@ public class ExcelReader {
 
 			for (Row row : sheet) {
 				
-				if(row.getLastCellNum() != 5 || row.getLastCellNum() != 7 ) {
-					throw new MyException();
-				}
-				
 				if (row.getRowNum() == 0) {
 					String toAdd = Integer.toString(row.getLastCellNum());
-					values.add(toAdd);
+					q.enqueue(toAdd);
 				}
 				
 				for (Cell cell : row) {
@@ -41,10 +39,17 @@ public class ExcelReader {
 						
 						if (cellType.equals(CellType.STRING)) {
 							cellValue = cell.getStringCellValue();
-							values.add(cellValue);
-						} else {
-							
-						}
+							//System.out.println(cellValue);
+							q.enqueue(cellValue);
+						} else if(cellType.equals(CellType.NUMERIC)) {
+							cellValue = new String(Double.toString(cell.getNumericCellValue()));
+							//System.out.println(cellValue);
+							q.enqueue(cellValue);
+						}else if(cellType.equals(CellType.BLANK)){
+						q.enqueue("(blank)");
+					}
+					}else {
+						
 					}
 				}
 			}
@@ -56,11 +61,8 @@ public class ExcelReader {
 			// TODO Auto-generated catch block
 			//MyException ex = new MyException();
 			//e.printStackTrace();
-		} catch (MyException e) {
-			System.out.println(e.getMessage());
-			error.add("error");
 		}
 
-		return values;
+		return q;
 	}
 }
