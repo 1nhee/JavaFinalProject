@@ -1,6 +1,9 @@
 package edu.handong.csee.merge;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -18,22 +21,43 @@ public class start {
 	static boolean Help;
 
 	public static void main(String[] args) throws Throwable {
+		
+		Options options = createOptions();
 
-		ArrayList<String> path = new ArrayList<String>();
+		if (parseOptions(options, args)) {
+			if (Help) {
+				printHelp(options);
+				return;
+			}
+		}
+
+		
+		// path is required (necessary) data so no need to have a branch.
+		if(!Input_path.isEmpty()) {
+			System.out.println("This is result of 'i' option");
+			System.out.println("You put this Input path: " + Input_path + "\n");
+		}
+		
+		if(!Output_path.isEmpty()) {
+			System.out.println("This is result of 'o' option");
+			System.out.println("You put this Output path: " + Output_path + "\n");
+		}
+		
 
 		// UnzipSub unzip = new UnzipSub();
 		ZipReader zipReader = new ZipReader();
 		start toStart = new start();
 		// toStart.run(args);
 
-		Input_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
-		Output_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
+		//Input_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
+		//Output_path = "C:\\Users\\Inhee Kwak\\git\\JavaFinalProject\\data";
 
-		ArrayList<String> toGet = new ArrayList<String>();
+		Queue<String> toGet = new LinkedList<String>();
 		ArrayList<String> allFileContents = new ArrayList<String>();
 		ArrayList<Integer> allHeaderNum = new ArrayList<Integer>();
 
 		for (int i = 1; i < 6; i++) {
+		
 			String toCheck = String.format("%04d", i);
 			// System.out.println(toStart.Input_path + "\\" + toCheck + ".zip");
 			ZipReader zipR = new ZipReader();
@@ -43,7 +67,7 @@ public class start {
 			for (String toAdd : toGet) {
 
 				allFileContents.add(toAdd);
-				// System.out.println(toAdd);
+				//System.out.println(toAdd);
 			}
 		}
 
@@ -55,7 +79,6 @@ public class start {
 
 		ArrayList<Integer> table5Header = new ArrayList<Integer>();
 		ArrayList<Integer> table7Header = new ArrayList<Integer>();
-		ArrayList<Integer> table55Header = new ArrayList<Integer>();
 
 		ArrayList<Integer> tableNum = new ArrayList<Integer>();
 		ArrayList<Integer> strNum = new ArrayList<Integer>();
@@ -66,102 +89,71 @@ public class start {
 			} else if (allFileContents.get(i).equals("7")) {
 				table7Header.add(i + 1);
 				strNum.add(i + 10);
-			} else if (allFileContents.get(i).equals("Header")) {
-				table55Header.add(i + 1);
-				tableNum.add(i + 6);
 			}
+			/*
+			 * else if (allFileContents.get(i).equals("Header")) { table55Header.add(i + 1);
+			 * tableNum.add(i + 6); }
+			 */
 		}
 
 		for (int i = table7Header.get(0); i < table7Header.get(0) + 7; i++) {
 			allHeader.add(allFileContents.get(i));
 		}
 
-		for (int i = table5Header.get(0); i < table5Header.get(0) + 1; i++) {
+		for (int i = table5Header.get(0); i < table5Header.get(0) + 6; i++) {
 			allTableHeader.add(allFileContents.get(i));
-		}
-
-		for (int i = table55Header.get(0); i < table55Header.get(0) + 5; i++) {
-			allTableHeader.add(allFileContents.get(i));
+			//System.out.println(i + ": " + allFileContents.get(i));
 		}
 
 		int studentTbl = 1;
-		for (int count : table55Header) {
-			System.out.println("count " + count);
+		for (int count : table5Header) {
+			//System.out.println("count " + count);
 			String toCheck = String.format("%04d", studentTbl++);
-			allTable.add("Student " + toCheck);
+			allTable.add(toCheck);
 
-			if (count == 406) {
-				for (int i = count + 5;; i++) {
+				for (int i = count + 6;; i++) {
 					allTable.add(allFileContents.get(i));
-					System.out.println(i + ": " + allFileContents.get(i));
-					if (allFileContents.get(i + 1).equals("5")) {
+					//System.out.println(i + ": " + allFileContents.get(i));
+					if(i == 801) {
+						break;
+					}
+					
+					if (allFileContents.get(i + 1).equals("7")) {
 						break;
 					}
 				}
-			} else {
-				for (int i = count + 5;; i++) {
-					allTable.add(allFileContents.get(i));
-					System.out.println(i + ": " + allFileContents.get(i));
-					if (i == 649 || allFileContents.get(i + 1).equals("7")) {
-						break;
-					}
-				}
-			}
+			//}
 		}
 
 		int studentStr = 1;
 		for (int count : table7Header) {
-
+			// System.out.println("count " + count);
 			String toCheck = String.format("%04d", studentStr++);
-			allStr.add("Student " + toCheck);
+			allStr.add(toCheck);
 
-			for (int i = count + 8;; i++) {
+			for (int i = count + 7;; i++) {
 				allStr.add(allFileContents.get(i));
 				// System.out.println(i + " " + allFileContents.get(i));
+				
+				//if(allFileContents.get(i).equals("북한의 농업ㆍ식량 사정과 대응 방향") || allFileContents.get(i).equals("세계보건기구, 대북 보건의료 정책, WHO 중점 지원사업") || allFileContents.get(i).equals("세계보건기구, 대북 보건의료 정책, WHO 중점 지원사업")) {
+					//allStr.add(" ");
+				//}
 
-				if (allFileContents.get(i + 1).equals("5") || (allFileContents.get(i).equals("���ϱ�������������ȸ"))) {
+				if (allFileContents.get(i + 1).equals("5") || (allFileContents.get(i).equals("���ϱ�������������ȸ"))) {
 					break;
 				}
 			}
 		}
-
-		ArrayList<String> finishStr = new ArrayList<String>();
-		ArrayList<String> finishTable = new ArrayList<String>();
-
-		int rowStr = 0;
-		String strHead = allHeader.get(0) + "," + allHeader.get(1) + "," + allHeader.get(2).toString() + ","
-				+ allHeader.get(3).toString() + "," + allHeader.get(4).toString() + "," + allHeader.get(5).toString()
-				+ "," + allHeader.get(6).toString();
-		// finishStr.add(strHead);
-
-		utils write = new utils();
-
+		
 		// write string file
-		CSVWriter.writeAFile(finishStr, Output_path + "\\string.csv", allHeader);
+		CSVWriter.writeAFile(allStr, Output_path + "\\String.csv", allHeader);
+		//System.out.println(allTableHeader.size());
+		CSVWriter.writeAFile(allTable, Output_path + "\\Table.csv", allTableHeader);
 
-		// write table file
-		// write.writeAFile(allTable, Output_path+"\\table.xlsx");
 
 	}// end of main
 
-	public void run(String[] args) {
-		Options options = createOptions();
-
-		ArrayList<String> path = new ArrayList<String>();
-
-		if (parseOptions(options, args)) {
-			if (Help) {
-				printHelp(options);
-				return;
-			}
-		}
-
-		// path is required (necessary) data so no need to have a branch.
-		System.out.println("This is result of 'i' option");
-		System.out.println("You put this path: " + Input_path + "\n");
-	}
-
-	public boolean parseOptions(Options options, String[] args) {
+	public static boolean parseOptions(Options options, String[] args) {
 		CommandLineParser parser = new DefaultParser();
 
 		try {
@@ -169,8 +161,9 @@ public class start {
 			CommandLine cmd = parser.parse(options, args);
 
 			start.Input_path = cmd.getOptionValue("i");
-			System.out.println(Input_path);
+			//System.out.println("CLI Input: "+Input_path);
 			start.Output_path = cmd.getOptionValue("o");
+			//System.out.println("CLI Input: "+Output_path);
 			start.Help = cmd.hasOption("h");
 
 		} catch (Exception e) {
@@ -182,7 +175,7 @@ public class start {
 	}
 
 	// Definition Stage
-	public Options createOptions() {
+	public static Options createOptions() {
 		Options options = new Options();
 
 		// input
@@ -201,7 +194,7 @@ public class start {
 		return options;
 	}
 
-	public void printHelp(Options options) {
+	public static void printHelp(Options options) {
 		// automatically generate the help statement
 		HelpFormatter formatter = new HelpFormatter();
 		String header = "ls CLI";
