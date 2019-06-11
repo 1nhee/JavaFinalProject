@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
@@ -11,12 +13,14 @@ import org.apache.commons.compress.archivers.zip.ZipFile;
 import edu.handong.csee.merge.ExcelReader;
 import edu.handong.csee.merge.MyException;
 
-public class ZipReader {
+public class ZipReader extends Thread{
 
-	public ArrayList<String> readFileInZip(String path) {
+	public Queue<String> readFileInZip(String path) {
 		
 		ZipFile zipFile;
-		ArrayList<String> fileContents = new ArrayList<String>();
+		//ArrayList<String> fileContents = new ArrayList<String>();
+		Queue<String> queue = new LinkedList<String>();
+		Queue<String> error = new LinkedList<String>();
 		
 		try {
 			zipFile = new ZipFile(path);
@@ -35,17 +39,22 @@ public class ZipReader {
 			        
 			        for(String value : myReader.getData(stream)) {
 			        	
+			        	if(value.equals("error")) {
+			        		error.offer("error");
+			        		return error;
+			        	}
+			        	
 			        	if(!value.equals(null)) {
 			        		
 			        		if(value.equals("4")) {
 			        			num++;
-			        			fileContents.add("5");
+			        			queue.offer("5");
 			        		}else {
-			        			if(num == 1 && value.equals("Á¦¸ñ(¹Ýµå½Ã ¿ä¾à¹® ¾ç½Ä¿¡ ÀÔ·ÂÇÑ Á¦¸ñ°ú °°¾Æ¾ß ÇÔ.)")) {
-				        			fileContents.add("Header");
+			        			if(num == 1 && value.equals("ï¿½ï¿½ï¿½ï¿½(ï¿½Ýµï¿½ï¿½ ï¿½ï¿½à¹® ï¿½ï¿½Ä¿ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ¾ï¿½ ï¿½ï¿½.)")) {
+			        				queue.offer("Header");
 				        			num = 0;
 				        		}
-			        			fileContents.add(value);
+			        			queue.offer(value);
 			        		}
 			        	}
 			        }
@@ -54,9 +63,9 @@ public class ZipReader {
 		    zipFile.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			MyException ex = new MyException(); 
+	
 		}
-		return fileContents;
+		return queue;
 	}
 
 }
