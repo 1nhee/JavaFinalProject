@@ -12,6 +12,7 @@ import org.apache.commons.compress.archivers.zip.ZipFile;
 
 import edu.handong.csee.merge.ExcelReader;
 import edu.handong.csee.merge.MyException;
+import edu.handong.csee.merge.queue;
 
 public class ZipReader extends Thread{
 
@@ -20,7 +21,6 @@ public class ZipReader extends Thread{
 		ZipFile zipFile;
 		//ArrayList<String> fileContents = new ArrayList<String>();
 		Queue<String> queue = new LinkedList<String>();
-		Queue<String> error = new LinkedList<String>();
 		
 		try {
 			zipFile = new ZipFile(path);
@@ -32,17 +32,18 @@ public class ZipReader extends Thread{
 		    	
 		    	if(!entry.isDirectory()) {
 		    		InputStream stream = zipFile.getInputStream(entry);
-		    		
-			        ExcelReader myReader = new ExcelReader();
+		    	
+			        Thread myReader = new ExcelReader();
+
+			        myReader.start();
 			        
 			        int num = 0;
 			        
-			        for(String value : myReader.getData(stream)) {
-			        	
-			        	if(value.equals("error")) {
-			        		error.offer("error");
-			        		return error;
-			        	}
+			        queue q = new queue();
+			        q = ((ExcelReader) myReader).getData(stream);
+			        
+			        while (q.hasItems()) {
+			        	String value = q.dequeue();
 			        	
 			        	if(!value.equals(null)) {
 			        		
@@ -56,6 +57,8 @@ public class ZipReader extends Thread{
 				        		}
 			        			queue.offer(value);
 			        		}
+			        	}else {
+			        		queue.offer("(blank)");
 			        	}
 			        }
 		    	}
@@ -63,7 +66,8 @@ public class ZipReader extends Thread{
 		    zipFile.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-	
+		//MyException ex = new MyException();
+			
 		}
 		return queue;
 	}
