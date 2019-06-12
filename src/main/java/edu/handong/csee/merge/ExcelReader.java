@@ -27,6 +27,10 @@ public class ExcelReader extends Thread{
 
 			for (Row row : sheet) {
 				
+				if((row.getLastCellNum() == 0)) {
+					throw new MyException();
+				}
+				
 				if (row.getRowNum() == 0) {
 					String toAdd = Integer.toString(row.getLastCellNum());
 					q.enqueue(toAdd);
@@ -61,6 +65,8 @@ public class ExcelReader extends Thread{
 			// TODO Auto-generated catch block
 			//MyException ex = new MyException();
 			//e.printStackTrace();
+		}catch(MyException e) {
+			System.out.println(e.getMessage());
 		}
 
 		return q;
