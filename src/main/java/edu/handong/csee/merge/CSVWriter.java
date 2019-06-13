@@ -52,7 +52,7 @@ public class CSVWriter {
 
 					} else if (i == 154) {
 						// System.out.println
-						csvPrinter.printRecord(Arrays.asList(finishStr.get(i), finishStr.get(i + 1)));
+						csvPrinter.printRecord(Arrays.asList(" ",finishStr.get(i), finishStr.get(i + 1)));
 					}
 				}
 
@@ -68,7 +68,7 @@ public class CSVWriter {
 				
 				csvPrinter.printRecord(Arrays.asList("Student ID", allHeader.get(4), allHeader.get(5)));
 
-				int count = 0;
+				int count = 1;
 				String input = new String();
 
 				// System.out.println(finishStr.size());
