@@ -103,22 +103,4 @@ public class CSVWriter {
 		}
 	}
 
-	public static void writeAErrorFile(ArrayList<String> errorFileNames, String targetFileName) throws IOException {
-		try {
-
-			FileOutputStream outputStream = new FileOutputStream(targetFileName);
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-			writer.write("\uFEFF");
-
-			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Error File Name"));
-
-			for (String error : errorFileNames) {
-				csvPrinter.printRecord(error);
-			}
-
-			csvPrinter.flush();
-		} finally {
-
-		}
-	}
 }
