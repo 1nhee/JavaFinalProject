@@ -50,17 +50,25 @@ public class CSVWriter {
 						csvPrinter.printRecord(Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1),
 								finishStr.get(i + 2), finishStr.get(i + 3), finishStr.get(i + 4), finishStr.get(i + 5),
 								finishStr.get(i + 6)));
-					} else if ((i < 150 && i % 7 == 0)) {
+					} else if (i % 7 == 0) {
+						if (i == 161) {
+							break;
+						}
 						String StudentNum = String.format("%04d", count);
 						csvPrinter.printRecord(Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1),
 								finishStr.get(i + 2), finishStr.get(i + 3), finishStr.get(i + 4), finishStr.get(i + 5),
 								finishStr.get(i + 6)));
+						//System.out.println(StudentNum + i + finishStr.get(i) + finishStr.get(i + 1)+finishStr.get(i + 2)+ finishStr.get(i + 3)+ finishStr.get(i + 4)+ finishStr.get(i + 5)+finishStr.get(i + 6));
 
-					} else if (i == 154) {
-						// System.out.println
-						String StudentNum = String.format("%04d", count);
-						csvPrinter.printRecord(Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1)));
-					}
+					} //else if (i == 161) {
+						/*
+						 * // System.out.println String StudentNum = String.format("%04d", count);
+						 * //System.out.println(StudentNum+ finishStr.get(i)+ finishStr.get(i + 1));
+						 * csvPrinter.printRecord(Arrays.asList(StudentNum, finishStr.get(i),
+						 * finishStr.get(i + 1)));
+						 */
+						//break;
+					//}
 				}
 
 				System.out.println("Your String file is written in " + targetFileName);
