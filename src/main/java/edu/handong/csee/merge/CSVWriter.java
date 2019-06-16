@@ -40,19 +40,26 @@ public class CSVWriter {
 					if (finishStr.get(i).equals("0001") || finishStr.get(i).equals("0002")
 							|| finishStr.get(i).equals("0003") || finishStr.get(i).equals("0004")
 							|| finishStr.get(i).equals("0005")) {
-						String StudentNum = String.format("%04d", count++);
+						if (finishStr.get(i).equals("0002") || finishStr.get(i).equals("0003")
+								|| finishStr.get(i).equals("0004") || finishStr.get(i).equals("0005")) {
+							count++;
+						}
+
+						String StudentNum = String.format("%04d", count);
 						finishStr.remove(i);
 						csvPrinter.printRecord(Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1),
 								finishStr.get(i + 2), finishStr.get(i + 3), finishStr.get(i + 4), finishStr.get(i + 5),
 								finishStr.get(i + 6)));
 					} else if ((i < 150 && i % 7 == 0)) {
-						csvPrinter.printRecord(Arrays.asList(" ", finishStr.get(i), finishStr.get(i + 1),
+						String StudentNum = String.format("%04d", count);
+						csvPrinter.printRecord(Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1),
 								finishStr.get(i + 2), finishStr.get(i + 3), finishStr.get(i + 4), finishStr.get(i + 5),
 								finishStr.get(i + 6)));
 
 					} else if (i == 154) {
 						// System.out.println
-						csvPrinter.printRecord(Arrays.asList(" ",finishStr.get(i), finishStr.get(i + 1)));
+						String StudentNum = String.format("%04d", count);
+						csvPrinter.printRecord(Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1)));
 					}
 				}
 
@@ -64,8 +71,9 @@ public class CSVWriter {
 				// System.out.println("head: "+ strHead);
 
 				CSVPrinter csvPrinter = new CSVPrinter(writer,
-						CSVFormat.DEFAULT.withHeader(allHeader.get(0).substring(0, allHeader.get(0).indexOf("2.")-1),allHeader.get(0).substring(allHeader.get(0).indexOf("2."))));
-				
+						CSVFormat.DEFAULT.withHeader(allHeader.get(0).substring(0, allHeader.get(0).indexOf("2.") - 1),
+								allHeader.get(0).substring(allHeader.get(0).indexOf("2."))));
+
 				csvPrinter.printRecord(Arrays.asList("Student ID", allHeader.get(4), allHeader.get(5)));
 
 				int count = 1;
@@ -77,19 +85,28 @@ public class CSVWriter {
 					if (finishStr.get(i).equals("0001") || finishStr.get(i).equals("0002")
 							|| finishStr.get(i).equals("0003") || finishStr.get(i).equals("0004")
 							|| finishStr.get(i).equals("0005")) {
-						String StudentNum = String.format("%04d", count++);
+						if (finishStr.get(i).equals("0002") || finishStr.get(i).equals("0003")
+								|| finishStr.get(i).equals("0004") || finishStr.get(i).equals("0005")) {
+							count++;
+						}
+
+						String StudentNum = String.format("%04d", count);
+
 						finishStr.remove(i);
 						csvPrinter.printRecord(
 								Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1), finishStr.get(i + 2),
 										finishStr.get(i + 3), finishStr.get(i + 4), finishStr.get(i + 5)));
 					} else if (i % 6 == 0) {
-						if(i == 498) {
+						if (i == 498) {
 							break;
 						}
-						
-						//System.out.println(i + ":" + finishStr.get(i) + finishStr.get(i + 1)+ finishStr.get(i + 2)+finishStr.get(i + 3)+ finishStr.get(i + 4) + finishStr.get(i + 5));
+
+						String StudentNum = String.format("%04d", count);
+						// System.out.println(i + ":" + finishStr.get(i) + finishStr.get(i + 1)+
+						// finishStr.get(i + 2)+finishStr.get(i + 3)+ finishStr.get(i + 4) +
+						// finishStr.get(i + 5));
 						csvPrinter.printRecord(
-								Arrays.asList(" ", finishStr.get(i), finishStr.get(i + 1), finishStr.get(i + 2),
+								Arrays.asList(StudentNum, finishStr.get(i), finishStr.get(i + 1), finishStr.get(i + 2),
 										finishStr.get(i + 3), finishStr.get(i + 4), finishStr.get(i + 5)));
 					}
 				}
